@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Crop Price Forecast Portal</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Bootstrap Icons -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.9.1/font/bootstrap-icons.min.css" rel="stylesheet">
+  <!-- Chart.js for graph rendering -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    /* Sidebar styling */
+    .sidebar {
+      width: 250px;
+      height: 100vh;
+      position: fixed;
+      background-color: white;
+      box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .content {
+      margin-left: 250px;
+      padding: 20px;
+      background-color: #f8f9fa;
+    }
+
+    .card {
+      margin-top: 20px;
+      height: 360px;
+    }
+
+    .table-container, .chart-container {
+      max-width: 100%;
+      overflow-x: auto;
+    }
+
+    .chart-container {
+      position: relative;
+      display: flex;
+      flex-direction: row;
+      gap: 20px;
+      margin-bottom: 20px;
+    }
+
+    .chart-card, .forecast-card {
+      flex: 1;
+      height: 360px;
+      transition: all 0.5s ease-in-out;
+    }
+
+    .chart-card {
+      position: relative;
+      width: 50%;
+    }
+
+    .forecast-card {
+      position: relative;
+      width: 50%;
+    }
+
+    .nav-link:hover {
+      background-color: lightgrey;
+      color: black !important;
+    }
+
+    @keyframes fadeIn {
+      0% { opacity: 0; transform: translateY(20px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+
+    canvas {
+      animation: fadeIn 1s ease;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Sidebar -->
+  <div class="sidebar d-flex flex-column flex-shrink-0 p-3">
+    <form class="d-flex mb-3" role="search">
+      <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+      <button class="btn btn-outline-primary" type="submit">
+        <i class="bi bi-search"></i>
+      </button>
+    </form>
+
+    <ul class="nav nav-pills flex-column mb-auto">
+      <li class="nav-item">
+        <a href="#" class="nav-link active" aria-current="page">
+          <i class="bi bi-speedometer2"></i> Dashboard
+        </a>
+      </li>
+      <li>
+        <a href="#" class="nav-link link-dark">
+          <i class="bi bi-person"></i> My Account
+        </a>
+      </li>
+      <li>
+        <a href="#" class="nav-link link-dark">
+          <i class="bi bi-chat-left-text"></i> Add Comment
+        </a>
+      </li>
+      <li>
+        <a href="#" class="nav-link link-dark">
+          <i class="bi bi-box-arrow-right"></i> Logout
+        </a>
+      </li>
+    </ul>
+  </div>
+
+  <!-- Main content -->
+  <div class="content">
+    <h1 id="heading1">KRISHIVYAASS - Crop Price Dashboard</h1>
+
+    <!-- Chart and Forecast Interpretations Container -->
+    <div class="container mt-4 chart-container" id="chartContainer">
+      <!-- Chart card containing the graph -->
+      <div class="card chart-card shadow-sm">
+        <div class="card-body">
+          <h5 class="card-title">Crop Price Chart</h5>
+          <div class="position-relative">
+            <canvas id="cropChart" style="height: 100%; width: 100%;"></canvas>
+            <p id="chartPlaceholder" style="text-align: center;">Crop chart (no data available)</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Forecast card -->
+      <div class="card forecast-card shadow-sm" id="forecastCard">
+        <div class="card-body">
+          <h5 class="card-title">Forecast Interpretations</h5>
+          <p class="card-text">Insights and interpretations of the forecasted data will go here.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Real-Time Items Table -->
+    <div class="container mt-4">
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <h5 class="card-title">Crop Prices</h5>
+          <div class="table-container">
+            <table class="table table-striped" id="cropsTable">
+              <thead>
+                <tr>
+                  <th scope="col">Crop Name</th>
+                  <th scope="col">Price</th>
+                </tr>
+              </thead>
+              <tbody>
+                <!-- Data will be injected here by Flask -->
+                {% for crop in crops %}
+                <tr>
+                  <td>{{ crop.crop_name }}</td>
+                  <td>{{ crop.price }}</td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap JS and Popper.js -->
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+
+  <!-- Custom JS -->
+  <script src="/static/custom.js"></script>
+
+</body>
+</html>
